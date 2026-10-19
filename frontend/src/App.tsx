@@ -31,8 +31,8 @@ function NavBar() {
         </div>
       </div>
       <nav className="nav-links">
-        <NavLink to="/" end className="nav-link">Clientes</NavLink>
         <NavLink to="/dashboard" className="nav-link">Dashboard</NavLink>
+        <NavLink to="/" end className="nav-link">Clientes</NavLink>
         <NavLink to="/profissionais" className="nav-link">Profissionais</NavLink>
         <NavLink to="/servicos" className="nav-link">Serviços</NavLink>
         <NavLink to="/agendamentos" className="nav-link">Agendamentos</NavLink>
@@ -49,8 +49,8 @@ function App() {
       <NavBar />
       <main className="container page-content">
         <Routes>
-          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Clientes />} />
           <Route path="/profissionais" element={<Profissionais />} />
           <Route path="/servicos" element={<Servicos />} />
