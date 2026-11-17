@@ -3,8 +3,8 @@
 
 INSERT INTO "Usuario" ("id", "email", "senhaHash", "nivelAcesso")
 VALUES
-  ('00000000-0000-4000-8000-000000000001', 'gerente.demo@salao.local', '$2b$12$IHZznZUviaMggbFioARPDuHFTq.t4hTDjS4Q/TgxXThtyc3Sfl/bG', 'GERENTE'),
-  ('00000000-0000-4000-8000-000000000002', 'funcionario.demo@salao.local', '$2b$12$bTotQ01LaI1II5wpwQT/9OLfPInofaki7zUVJJ9zw/rRkah1MTycW', 'FUNCIONARIO'),
+  ('00000000-0000-4000-8000-000000000001', 'testeadmin@teste.com', '$2b$12$TZq7v/.KVKeyIn/Z2VMEBuwcaw9CRwkIn6k2oYIQRcEU3cXr33jOu', 'GERENTE'),
+  ('00000000-0000-4000-8000-000000000002', 'testecomum@teste.com', '$2b$12$TZq7v/.KVKeyIn/Z2VMEBuwcaw9CRwkIn6k2oYIQRcEU3cXr33jOu', 'FUNCIONARIO'),
   ('00000000-0000-4000-8000-000000000003', 'cliente.demo@salao.local', '$2b$12$/5644q.Pz/J5pRW/azJGZewrn65N8WHxOCpsknUmRhyhqMDkPZbaW', 'CLIENTE')
 ON CONFLICT ("id") DO NOTHING;
 
