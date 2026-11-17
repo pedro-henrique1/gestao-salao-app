@@ -22,6 +22,18 @@ export class AgendamentoService {
     });
   }
 
+  async createForUsuario(createAgendamentoDto: CreateAgendamentoDto, usuarioId: string) {
+    const cliente = await this.prisma.cliente.findUnique({ where: { usuarioId } });
+    if (!cliente) throw new NotFoundException('Cliente vinculado não encontrado.');
+    return this.create({ ...createAgendamentoDto, clienteId: cliente.id });
+  }
+
+  async findForUsuario(usuarioId: string, query: Record<string, string> = {}) {
+    const cliente = await this.prisma.cliente.findUnique({ where: { usuarioId } });
+    if (!cliente) throw new NotFoundException('Cliente vinculado não encontrado.');
+    return this.findAll({ ...query, clienteId: cliente.id });
+  }
+
   async findAll(query: Record<string, string> = {}) {
     const { page, limit, skip } = getPagination(Number(query.page), Number(query.limit));
     const where = {

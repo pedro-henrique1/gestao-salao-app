@@ -63,6 +63,15 @@ export class ClienteService {
     return cliente;
   }
 
+  async findByUsuarioId(usuarioId: string) {
+    const cliente = await this.prisma.cliente.findUnique({
+      where: { usuarioId },
+      include: { agendamentos: { include: { servico: true, profissional: true } } },
+    });
+    if (!cliente) throw new NotFoundException('Cliente vinculado não encontrado.');
+    return cliente;
+  }
+
   async update(id: string, updateClienteDto: UpdateClienteDto) { 
     await this.findOne(id);
 

@@ -10,6 +10,7 @@ generator client {
 enum NivelAcesso {
   GERENTE
   FUNCIONARIO
+  CLIENTE
 }
 
 enum StatusAgendamento {
@@ -29,6 +30,7 @@ model Usuario {
   email        String        @unique
   senhaHash    String
   nivelAcesso  NivelAcesso
+  cliente      Cliente?
   profissional Profissional?
 }
 
@@ -39,6 +41,8 @@ model Cliente {
   email        String?
   dataCadastro DateTime      @default(now())
   ativo        Boolean       @default(true)
+  usuarioId    String?       @unique
+  usuario      Usuario?      @relation(fields: [usuarioId], references: [id])
   agendamentos Agendamento[]
 }
 

@@ -1,0 +1,49 @@
+-- Dados demonstrativos para apresentação do aplicativo Web e Flutter.
+-- As contas usam a mesma senha apenas para facilitar a demonstração local.
+
+INSERT INTO "Usuario" ("id", "email", "senhaHash", "nivelAcesso")
+VALUES
+  ('00000000-0000-4000-8000-000000000001', 'gerente.demo@salao.local', '$2b$12$IHZznZUviaMggbFioARPDuHFTq.t4hTDjS4Q/TgxXThtyc3Sfl/bG', 'GERENTE'),
+  ('00000000-0000-4000-8000-000000000002', 'funcionario.demo@salao.local', '$2b$12$bTotQ01LaI1II5wpwQT/9OLfPInofaki7zUVJJ9zw/rRkah1MTycW', 'FUNCIONARIO'),
+  ('00000000-0000-4000-8000-000000000003', 'cliente.demo@salao.local', '$2b$12$/5644q.Pz/J5pRW/azJGZewrn65N8WHxOCpsknUmRhyhqMDkPZbaW', 'CLIENTE')
+ON CONFLICT ("id") DO NOTHING;
+
+INSERT INTO "Cliente" ("id", "nome", "telefone", "email", "usuarioId")
+VALUES
+  ('10000000-0000-4000-8000-000000000001', 'Mariana Oliveira', '11988880001', 'cliente.demo@salao.local', '00000000-0000-4000-8000-000000000003'),
+  ('10000000-0000-4000-8000-000000000002', 'Ana Paula Mendes', '11988880002', 'ana.mendes@example.com', NULL),
+  ('10000000-0000-4000-8000-000000000003', 'Juliana Costa', '11988880003', 'juliana.costa@example.com', NULL)
+ON CONFLICT ("id") DO NOTHING;
+
+INSERT INTO "Profissional" ("id", "nome", "telefone", "especialidade", "usuarioId")
+VALUES
+  ('20000000-0000-4000-8000-000000000001', 'Carla Beauty', '11977770001', 'Cabeleireira', '00000000-0000-4000-8000-000000000002'),
+  ('20000000-0000-4000-8000-000000000002', 'Beatriz Nails', '11977770002', 'Manicure e Nail Designer', NULL)
+ON CONFLICT ("id") DO NOTHING;
+
+INSERT INTO "Servico" ("id", "nome", "descricao", "precoPadrao", "duracaoMinutos")
+VALUES
+  ('30000000-0000-4000-8000-000000000001', 'Corte e escova', 'Corte personalizado com finalização.', 85.00, 60),
+  ('30000000-0000-4000-8000-000000000002', 'Manutenção de gel', 'Manutenção completa das unhas em gel.', 120.00, 90),
+  ('30000000-0000-4000-8000-000000000003', 'Coloração', 'Coloração com avaliação prévia.', 180.00, 120)
+ON CONFLICT ("id") DO NOTHING;
+
+INSERT INTO "Agendamento" ("id", "dataHoraReserva", "status", "clienteId", "profissionalId", "servicoId")
+VALUES
+  ('40000000-0000-4000-8000-000000000001', CURRENT_TIMESTAMP - INTERVAL '3 days', 'CONCLUIDO', '10000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000001', '30000000-0000-4000-8000-000000000001'),
+  ('40000000-0000-4000-8000-000000000002', CURRENT_TIMESTAMP - INTERVAL '1 day', 'CONCLUIDO', '10000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000002', '30000000-0000-4000-8000-000000000002'),
+  ('40000000-0000-4000-8000-000000000003', CURRENT_TIMESTAMP + INTERVAL '1 day', 'PENDENTE', '10000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000002', '30000000-0000-4000-8000-000000000002'),
+  ('40000000-0000-4000-8000-000000000004', CURRENT_TIMESTAMP + INTERVAL '2 days', 'PENDENTE', '10000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000001', '30000000-0000-4000-8000-000000000003')
+ON CONFLICT ("id") DO NOTHING;
+
+INSERT INTO "Atendimento" ("id", "dataConclusao", "observacoes", "agendamentoId")
+VALUES
+  ('50000000-0000-4000-8000-000000000001', CURRENT_TIMESTAMP - INTERVAL '3 days', 'Cliente aprovou a finalização.', '40000000-0000-4000-8000-000000000001'),
+  ('50000000-0000-4000-8000-000000000002', CURRENT_TIMESTAMP - INTERVAL '1 day', 'Manutenção concluída.', '40000000-0000-4000-8000-000000000002')
+ON CONFLICT ("id") DO NOTHING;
+
+INSERT INTO "Pagamento" ("id", "valorFinal", "formaPagamento", "dataPagamento", "atendimentoId")
+VALUES
+  ('60000000-0000-4000-8000-000000000001', 85.00, 'PIX', CURRENT_TIMESTAMP - INTERVAL '3 days', '50000000-0000-4000-8000-000000000001'),
+  ('60000000-0000-4000-8000-000000000002', 120.00, 'CARTAO', CURRENT_TIMESTAMP - INTERVAL '1 day', '50000000-0000-4000-8000-000000000002')
+ON CONFLICT ("id") DO NOTHING;

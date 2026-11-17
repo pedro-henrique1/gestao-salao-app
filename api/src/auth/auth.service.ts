@@ -14,12 +14,34 @@ export class AuthService {
     const existente = await this.prisma.usuario.findUnique({ where: { email: dto.email } });
     if (existente) throw new ConflictException('Este e-mail já está cadastrado.');
     const quantidadeUsuarios = await this.prisma.usuario.count();
-    const usuario = await this.prisma.usuario.create({
-      data: {
-        email: dto.email,
-        senhaHash: await bcrypt.hash(dto.senha, 12),
-        nivelAcesso: quantidadeUsuarios === 0 ? NivelAcesso.GERENTE : NivelAcesso.FUNCIONARIO,
-      },
+    const nivelAcesso = dto.nivelAcesso === NivelAcesso.CLIENTE
+      ? NivelAcesso.CLIENTE
+      : (quantidadeUsuarios === 0 ? NivelAcesso.GERENTE : NivelAcesso.FUNCIONARIO);
+    if (nivelAcesso === NivelAcesso.CLIENTE && (!dto.nome || !dto.telefone)) {
+      throw new ConflictException('Nome e telefone são obrigatórios para contas de cliente.');
+    }
+
+    const usuario = await this.prisma.$transaction(async (prisma) => {
+      const novoUsuario = await prisma.usuario.create({
+        data: {
+          email: dto.email,
+          senhaHash: await bcrypt.hash(dto.senha, 12),
+          nivelAcesso,
+        },
+      });
+
+      if (nivelAcesso === NivelAcesso.CLIENTE) {
+        await prisma.cliente.create({
+          data: {
+            nome: dto.nome!,
+            telefone: dto.telefone!,
+            email: dto.email,
+            usuarioId: novoUsuario.id,
+          },
+        });
+      }
+
+      return novoUsuario;
     });
     return this.emitirToken(usuario.id, usuario.email, usuario.nivelAcesso);
   }

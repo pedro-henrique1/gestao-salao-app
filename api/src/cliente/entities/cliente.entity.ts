@@ -5,6 +5,7 @@ export class Cliente implements PrismaCliente {
   nome: string;
   telefone: string;
   email: string | null; 
+  usuarioId: string | null;
   dataCadastro: Date;
   ativo: boolean;
 }
